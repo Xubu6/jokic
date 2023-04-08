@@ -1,0 +1,19 @@
+{
+  "name": "jokic",
+  "version": "1.0.0",
+  "description": "An aggregated view of every NBA metric for every NBA player",
+  "main": "server.js",
+  "scripts": {
+    "start": "node src/server",
+    "serve": "nodemon ./src/server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^4.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}

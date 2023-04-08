@@ -1,0 +1,7 @@
+### TEST ROUTES
+
+### HEALTH ROUTE
+GET http://localhost:3000/health HTTP/1.1
+
+### GET ATA
+GET http://localhost:3000/data HTTP/1.1
