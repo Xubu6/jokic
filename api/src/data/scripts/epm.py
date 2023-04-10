@@ -48,15 +48,12 @@ def get_player_high_level_data():
 
 def prune_values(row_vals):
     pruned_values = []
-    # player_data = get_player_high_level_data()
-
     pruned_values.append(row_vals[0]) # full_name
     pruned_values.append(row_vals[10]) # Estimated Offensive +/-
     pruned_values.append(row_vals[12]) # Estimated Defensive +/-
     pruned_values.append(row_vals[14]) # EPM
     pruned_values.append(row_vals[16]) # Estimated Wins
     return pruned_values
-
 
 # Start to build scraped player data
 player_data = []
@@ -84,10 +81,6 @@ while rows_remaining:
     if len(filtered_row_with_types) > 1:
         pruned_row = prune_values(filtered_row_with_types)
         player_data.append(pruned_row)
-
-for player in player_data:
-    print(player)
-    
     
 # Query
 insert_player_data_query = """
@@ -116,7 +109,6 @@ except mysql.connector.Error as e:
     print(e)
 cursor = connection.cursor()
 
-
 # Update epm table
 try:
     cursor.executemany(insert_player_data_query, player_data)
@@ -124,6 +116,5 @@ try:
     print('Inserted data into nba_main successfully', player_data)
 except mysql.connector.Error as e:
     print('Could not insert player data:', e)
-
 
 connection.close()

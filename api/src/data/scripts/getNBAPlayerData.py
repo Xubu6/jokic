@@ -7,10 +7,6 @@ from nba_api.stats.static import players
 season_stats = []
 season_advanced_stats = []
 
-# player_advanced_stats = playerdashboardbyyearoveryear.PlayerDashboardByYearOverYear(
-#     player_id='1629685', measure_type_detailed='Advanced').get_dict()
-# print(player_advanced_stats)
-
 # Fetch player data for current season
 players = players.get_players()
 for player in players:

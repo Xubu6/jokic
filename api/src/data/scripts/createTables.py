@@ -97,7 +97,6 @@ CREATE TABLE IF NOT EXISTS epm (
     PRIMARY KEY (player_name));
 """
 
-
 # Establish MySQL DB Connection
 try:
     connection = mysql.connector.connect(
