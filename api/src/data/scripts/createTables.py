@@ -87,6 +87,16 @@ CREATE TABLE IF NOT EXISTS nba_advanced (
 )
 """
 
+create_epm_table_query = """
+CREATE TABLE IF NOT EXISTS epm (
+    player_name VARCHAR(45) NOT NULL,
+    e_off_plus_minus DECIMAL(10,2) NULL,
+    e_def_plus_minus DECIMAL(10,2) NULL,
+    epm DECIMAL(10,2) NULL,
+    e_wins DECIMAL(10,2) NULL,
+    PRIMARY KEY (player_name));
+"""
+
 
 # Establish MySQL DB Connection
 try:
@@ -126,5 +136,25 @@ try:
     print('nba_advanced table created! (or not)')
 except mysql.connector.Error as e:
     print('Could not create nba_advanced table:', e)
+
+connection.close()
+try:
+    connection = mysql.connector.connect(
+        host="localhost",
+        user=os.environ.get('MYSQL_DB_USER'),
+        password=os.environ.get('MYSQL_DB_PASS'),
+        database="jokic"
+    )
+except mysql.connector.Error as e:
+    print(e)
+
+cursor = connection.cursor()
+
+# Create nba_advanced table if needed
+try:
+    cursor.execute(create_epm_table_query)
+    print('epm table created! (or not)')
+except mysql.connector.Error as e:
+    print('Could not create epm table:', e)
 
 connection.close()
