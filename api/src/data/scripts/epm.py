@@ -113,7 +113,7 @@ cursor = connection.cursor()
 try:
     cursor.executemany(insert_player_data_query, player_data)
     connection.commit()
-    print('Inserted data into nba_main successfully', player_data)
+    print('Inserted data into epm successfully', player_data)
 except mysql.connector.Error as e:
     print('Could not insert player data:', e)
 

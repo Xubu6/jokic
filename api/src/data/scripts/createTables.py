@@ -97,6 +97,21 @@ CREATE TABLE IF NOT EXISTS epm (
     PRIMARY KEY (player_name));
 """
 
+create_bbref_table_query = """
+CREATE TABLE IF NOT EXISTS bbref (
+  player_name VARCHAR(45) NOT NULL,
+  per DECIMAL(10,2) NULL,
+  ows DECIMAL(10,2) NULL,
+  dws DECIMAL(10,2) NULL,
+  ws DECIMAL(10,2) NULL,
+  ws_per_48 DECIMAL(10,2) NULL,
+  obpm DECIMAL(10,2) NULL,
+  dbpm DECIMAL(10,2) NULL,
+  bpm DECIMAL(10,2) NULL,
+  vorp DECIMAL(10,2) NULL,
+  PRIMARY KEY (player_name));
+"""
+
 # Establish MySQL DB Connection
 try:
     connection = mysql.connector.connect(
@@ -149,11 +164,31 @@ except mysql.connector.Error as e:
 
 cursor = connection.cursor()
 
-# Create nba_advanced table if needed
+# Create epm table if needed
 try:
     cursor.execute(create_epm_table_query)
     print('epm table created! (or not)')
 except mysql.connector.Error as e:
     print('Could not create epm table:', e)
+
+connection.close()
+try:
+    connection = mysql.connector.connect(
+        host="localhost",
+        user=os.environ.get('MYSQL_DB_USER'),
+        password=os.environ.get('MYSQL_DB_PASS'),
+        database="jokic"
+    )
+except mysql.connector.Error as e:
+    print(e)
+
+cursor = connection.cursor()
+
+# Create bbref table if needed
+try:
+    cursor.execute(create_bbref_table_query)
+    print('bbref table created! (or not)')
+except mysql.connector.Error as e:
+    print('Could not create bbref table:', e)
 
 connection.close()
