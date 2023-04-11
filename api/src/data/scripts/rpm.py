@@ -81,7 +81,7 @@ except mysql.connector.Error as e:
     print(e)
 cursor = connection.cursor()
 
-# Update epm table
+# Update rpm table
 try:
     cursor.executemany(insert_player_data_query, player_data)
     connection.commit()

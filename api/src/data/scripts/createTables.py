@@ -144,6 +144,16 @@ CREATE TABLE IF NOT EXISTS wpa (
     PRIMARY KEY (player_name));
 """
 
+create_raptor_table_query = """
+CREATE TABLE IF NOT EXISTS raptor (
+    player_name VARCHAR(45) NOT NULL,
+    o_raptor DECIMAL(10,2) NULL,
+    d_raptor DECIMAL(10,2) NULL,
+    raptor DECIMAL(10,2) NULL,
+    raptor_war DECIMAL(10,2) NULL,
+    PRIMARY KEY (player_name));
+"""
+
 # Establish MySQL DB Connection
 try:
     connection = mysql.connector.connect(
@@ -282,5 +292,25 @@ try:
     print('wpa table created! (or not)')
 except mysql.connector.Error as e:
     print('Could not create wpa table:', e)
+
+connection.close()
+try:
+    connection = mysql.connector.connect(
+        host="localhost",
+        user=os.environ.get('MYSQL_DB_USER'),
+        password=os.environ.get('MYSQL_DB_PASS'),
+        database="jokic"
+    )
+except mysql.connector.Error as e:
+    print(e)
+
+cursor = connection.cursor()
+
+# Create raptor table if needed
+try:
+    cursor.execute(create_raptor_table_query)
+    print('raptor table created! (or not)')
+except mysql.connector.Error as e:
+    print('Could not create raptor table:', e)
 
 connection.close()
