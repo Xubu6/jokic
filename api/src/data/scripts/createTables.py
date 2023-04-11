@@ -112,6 +112,19 @@ CREATE TABLE IF NOT EXISTS bbref (
   PRIMARY KEY (player_name));
 """
 
+create_lebron_table_query = """
+CREATE TABLE IF NOT EXISTS lebron (
+  player_name VARCHAR(45) NOT NULL,
+  lebron DECIMAL(10,2) NULL,
+  o_lebron DECIMAL(10,2) NULL,
+  d_lebron DECIMAL(10,2) NULL,
+  bbi_war DECIMAL(10,2) NULL,
+  box_lebron DECIMAL(10,2) NULL,
+  box_o_lebron DECIMAL(10,2) NULL,
+  box_d_lebron DECIMAL(10,2) NULL,
+  PRIMARY KEY (player_name));
+"""
+
 # Establish MySQL DB Connection
 try:
     connection = mysql.connector.connect(
@@ -190,5 +203,25 @@ try:
     print('bbref table created! (or not)')
 except mysql.connector.Error as e:
     print('Could not create bbref table:', e)
+
+connection.close()
+try:
+    connection = mysql.connector.connect(
+        host="localhost",
+        user=os.environ.get('MYSQL_DB_USER'),
+        password=os.environ.get('MYSQL_DB_PASS'),
+        database="jokic"
+    )
+except mysql.connector.Error as e:
+    print(e)
+
+cursor = connection.cursor()
+
+# Create lebron table if needed
+try:
+    cursor.execute(create_lebron_table_query)
+    print('lebron table created! (or not)')
+except mysql.connector.Error as e:
+    print('Could not create lebron table:', e)
 
 connection.close()
