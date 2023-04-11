@@ -1,30 +1,26 @@
-# Stat Sources (Sites)
-
-### NBA
-#### Data:
+# Stat Sources
+Data for Jokic is pulled from the sites listed below.
+---
+#### NBA
 * player_id
 * net_rating
 * PIE
 ---
-### DunksAndThrees
-#### Data:
+#### DunksAndThrees
 * EPM
 * estimated_wins
 ---
-### BasketballReference
-#### Data:
+#### BasketballReference
 * WS
 * WS/48
 * BPM
 * VORP
 ---
-### BBallIndex
-#### Data:
+#### BBallIndex
 * LEBRON
 * bbi_war
 ---
-### ESPN
-#### Data:
+#### ESPN
 * PER
 * RPM (to be added)
 ---
