@@ -1,29 +1,29 @@
 # Stat Sources
 ###### Data for Jokic is pulled from the sites listed below.
-#### NBA
+#### [NBA](https://www.stats.nba.com)
 * player_id
 * net_rating
 * PIE
 ---
-#### DunksAndThrees
+#### [DunksAndThrees](https://www.dunksandthrees.com)
 * EPM
 * estimated_wins
 ---
-#### BasketballReference
+#### [BasketballReference](https://www.basketball-reference.com/leagues/NBA_2022_advanced.html)
 * WS
 * WS/48
 * BPM
 * VORP
 ---
-#### BBallIndex
+#### [BBallIndex](https://www.bball-index.com/lebron-database/)
 * LEBRON
 * bbi_war
 ---
-#### ESPN
+#### [ESPN](http://www.espn.com/nba/statistics/rpm)
 * PER
 * RPM
 ---
-#### inpredictable
+#### [inpredictable](https://stats.inpredictable.com/nba/ssnPlayer.php)
 * WPA
 * kWPA
 ---
