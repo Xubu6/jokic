@@ -172,9 +172,16 @@ CREATE TABLE IF NOT EXISTS dpm (
     PRIMARY KEY (player_name));
 """
 
+create_umbinaam_table_query = """
+CREATE TABLE IF NOT EXISTS umbinaam (
+    player_name VARCHAR(45) NOT NULL,
+    umbinaam DECIMAL(10,2) NULL,
+    PRIMARY KEY (player_name));
+"""
+
 query_list = [create_nba_main_table_query, create_nba_advanced_table_query, create_epm_table_query,
               create_bbref_table_query, create_lebron_table_query, create_rpm_table_query, create_wpa_table_query,
-              create_raptor_table_query, create_fic_table_query, create_raptor_table_query]
+              create_raptor_table_query, create_fic_table_query, create_raptor_table_query, create_umbinaam_table_query]
 
 query_num = 0
 for query in query_list:
