@@ -1,7 +1,6 @@
 import requests
 import os
 from bs4 import BeautifulSoup
-import datetime
 from ast import literal_eval
 import mysql.connector
 

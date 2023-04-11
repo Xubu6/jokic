@@ -162,8 +162,19 @@ CREATE TABLE IF NOT EXISTS fic (
     PRIMARY KEY (player_name));
 """
 
+create_dpm_table_query = """
+CREATE TABLE IF NOT EXISTS dpm (
+    player_name VARCHAR(45) NOT NULL,
+    dpm DECIMAL(10,2) NULL,
+    o_dpm DECIMAL(10,2) NULL,
+    d_dpm DECIMAL(10,2) NULL,
+    box_dpm DECIMAL(10,2) NULL,
+    PRIMARY KEY (player_name));
+"""
+
 query_list = [create_nba_main_table_query, create_nba_advanced_table_query, create_epm_table_query,
-              create_bbref_table_query, create_lebron_table_query, create_rpm_table_query, create_wpa_table_query, create_raptor_table_query, create_fic_table_query]
+              create_bbref_table_query, create_lebron_table_query, create_rpm_table_query, create_wpa_table_query,
+              create_raptor_table_query, create_fic_table_query, create_raptor_table_query]
 
 query_num = 0
 for query in query_list:
@@ -186,4 +197,4 @@ for query in query_list:
         print('Could not execute query {}:'.format(query_list[query_num]), e)
 
     connection.close()
-    query_num+=1
+    query_num += 1
