@@ -27,3 +27,7 @@
 * WPA
 * kWPA
 ---
+#### [RealGM](https://basketball.realgm.com/nba/stats/2023/Advanced_Stats/All/fic/All/desc/1/Regular_Season)
+* TS
+* FIC
+---
