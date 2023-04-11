@@ -21,5 +21,5 @@
 ---
 #### ESPN
 * PER
-* RPM (to be added)
+* RPM
 ---
