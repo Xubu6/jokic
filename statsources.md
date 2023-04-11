@@ -5,7 +5,7 @@
 * net_rating
 * PIE
 ---
-#### [DunksAndThrees](https://www.dunksandthrees.com)
+#### [DunksAndThrees](https://www.dunksandthrees.com/epm)
 * EPM
 * estimated_wins
 ---

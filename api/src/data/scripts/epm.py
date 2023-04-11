@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from ast import literal_eval
 
-URL = "https://dunksandthrees.com/epm"
+URL = "https://www.dunksandthrees.com/epm"
 
 # install latest chrome driver if not already installed
 chromedriver_autoinstaller.install()
@@ -42,7 +42,7 @@ def create_list_from_str(row_str):
 
 # Only for player metadata (e.g. pid, name, team_id, etc.)
 def get_player_high_level_data():
-    site_data = requests.get("https://dunksandthrees.com/site-data").json()
+    site_data = requests.get("https://wwwdunksandthrees.com/site-data").json()
     player_data = site_data["players"]
     return player_data
 
