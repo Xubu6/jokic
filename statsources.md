@@ -1,19 +1,30 @@
-# Sites
+# Stat Sources (Sites)
 
 ### NBA
 #### Data:
-* Player Names
-* MPG
-* etc.
+* player_id
+* net_rating
+* PIE
+---
+### DunksAndThrees
+#### Data:
+* EPM
+* estimated_wins
 ---
 ### BasketballReference
 #### Data:
-* DWS
-* OWS
-* etc.
+* WS
+* WS/48
+* BPM
+* VORP
 ---
-### NBA Stuffer
+### BBallIndex
 #### Data:
-* https://www.nbastuffer.com/analytics-101/
-* etc.
+* LEBRON
+* bbi_war
+---
+### ESPN
+#### Data:
+* PER
+* RPM (to be added)
 ---
