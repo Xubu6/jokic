@@ -23,3 +23,7 @@
 * PER
 * RPM
 ---
+#### inpredictable
+* WPA
+* kWPA
+* ---
