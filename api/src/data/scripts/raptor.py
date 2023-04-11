@@ -46,7 +46,6 @@ tbody = table.find("tbody")
 table_rows = tbody.find_all("tr")
 
 for row in table_rows:
-    print('Row:', row.text)
     fields_list = []
     player_name = row.find("td", class_="name").text
     fields_list.append(player_name.split("'")[0])

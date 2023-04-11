@@ -154,163 +154,36 @@ CREATE TABLE IF NOT EXISTS raptor (
     PRIMARY KEY (player_name));
 """
 
-# Establish MySQL DB Connection
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
+create_fic_table_query = """
+CREATE TABLE IF NOT EXISTS fic (
+    player_name VARCHAR(45) NOT NULL,
+    ts DECIMAL(10,2) NULL,
+    fic DECIMAL(10,2) NULL,
+    PRIMARY KEY (player_name));
+"""
 
-cursor = connection.cursor()
-# Create nba_main table if needed
-try:
-    cursor.execute(create_nba_main_table_query)
-    print('nba_main table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create nba_main table:', e)
+query_list = [create_nba_main_table_query, create_nba_advanced_table_query, create_epm_table_query,
+              create_bbref_table_query, create_lebron_table_query, create_rpm_table_query, create_wpa_table_query, create_raptor_table_query, create_fic_table_query]
 
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
+query_num = 0
+for query in query_list:
+    try:
+        connection = mysql.connector.connect(
+            host="localhost",
+            user=os.environ.get('MYSQL_DB_USER'),
+            password=os.environ.get('MYSQL_DB_PASS'),
+            database="jokic"
+        )
+    except mysql.connector.Error as e:
+        print(e)
 
-cursor = connection.cursor()
+    cursor = connection.cursor()
+    # Create nba_main table if needed
+    try:
+        cursor.execute(query)
+        print('{} query successful!'.format(query_list[query_num]))
+    except mysql.connector.Error as e:
+        print('Could not execute query {}:'.format(query_list[query_num]), e)
 
-# Create nba_advanced table if needed
-try:
-    cursor.execute(create_nba_advanced_table_query)
-    print('nba_advanced table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create nba_advanced table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create epm table if needed
-try:
-    cursor.execute(create_epm_table_query)
-    print('epm table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create epm table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create bbref table if needed
-try:
-    cursor.execute(create_bbref_table_query)
-    print('bbref table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create bbref table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create lebron table if needed
-try:
-    cursor.execute(create_lebron_table_query)
-    print('lebron table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create lebron table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create rpm table if needed
-try:
-    cursor.execute(create_rpm_table_query)
-    print('rpm table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create rpm table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create wpa table if needed
-try:
-    cursor.execute(create_wpa_table_query)
-    print('wpa table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create wpa table:', e)
-
-connection.close()
-try:
-    connection = mysql.connector.connect(
-        host="localhost",
-        user=os.environ.get('MYSQL_DB_USER'),
-        password=os.environ.get('MYSQL_DB_PASS'),
-        database="jokic"
-    )
-except mysql.connector.Error as e:
-    print(e)
-
-cursor = connection.cursor()
-
-# Create raptor table if needed
-try:
-    cursor.execute(create_raptor_table_query)
-    print('raptor table created! (or not)')
-except mysql.connector.Error as e:
-    print('Could not create raptor table:', e)
-
-connection.close()
+    connection.close()
+    query_num+=1
