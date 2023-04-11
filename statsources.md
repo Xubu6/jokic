@@ -9,7 +9,7 @@
 * EPM
 * estimated_wins
 ---
-#### [BasketballReference](https://www.basketball-reference.com/leagues/NBA_2022_advanced.html)
+#### [BasketballReference](https://www.basketball-reference.com/leagues/NBA_2023_advanced.html)
 * WS
 * WS/48
 * BPM
