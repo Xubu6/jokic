@@ -32,7 +32,7 @@ cursor = connection.cursor()
 # Create main_view view if needed
 try:
     cursor.execute(update_view_query)
-    print('Successfully created main_view!')
+    print('Successfully updated main_view!')
 except mysql.connector.Error as e:
     print('Could not execute query:', e)
 
