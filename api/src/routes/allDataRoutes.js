@@ -1,8 +1,9 @@
+const { getAllData } = require('../data/getAllData');
+
 const routes = async (fastify) => {
-  fastify.get("/data/all", async (req, reply) => {
+  fastify.get("/", async (req, reply) => {
     const connection = await fastify.mysql.getConnection();
-    const data = await connection.query("SELECT * FROM main_view");
-    connection.release();
+    const data = await getAllData(connection);
     return data;
   });
 };

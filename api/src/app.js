@@ -1,7 +1,5 @@
 require("dotenv").config();
 const fastify = require("fastify")({ logger: true });
-const dataRoute = require("./routes/data/all/get");
-const playerRoute = require("./routes/data/player/get")
 
 const buildServer = async () => {
   try {
@@ -14,8 +12,6 @@ const buildServer = async () => {
     console.log(error);
   }
 
-  await fastify.register(dataRoute)
-  await fastify.register(playerRoute)
   return fastify;
 };
 

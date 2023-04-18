@@ -2,8 +2,11 @@ const { buildServer } = require("./app");
 
 const start = async () => {
   const server = await buildServer();
+
+  // register routes
+  server.register(require("./routes"), { prefix: "api" });
   try {
-    server.listen({ port: 3000, host: "0.0.0.0" });
+    server.listen({ port: 8080, host: "0.0.0.0" });
   } catch (error) {
     console.error(error);
     server.log.error(`Failed to start server ${error}`);
