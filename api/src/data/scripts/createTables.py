@@ -183,7 +183,7 @@ query_list = [create_nba_main_table_query, create_nba_advanced_table_query, crea
               create_bbref_table_query, create_lebron_table_query, create_rpm_table_query, create_wpa_table_query,
               create_raptor_table_query, create_fic_table_query, create_raptor_table_query, create_umbinaam_table_query]
 
-query_num = 0
+
 for query in query_list:
     try:
         connection = mysql.connector.connect(
@@ -199,9 +199,9 @@ for query in query_list:
     # Create nba_main table if needed
     try:
         cursor.execute(query)
-        print('{} query successful!'.format(query_list[query_num]))
+        print('{} query successful!'.format(query))
     except mysql.connector.Error as e:
-        print('Could not execute query {}:'.format(query_list[query_num]), e)
+        print('Could not execute query {}:'.format(query), e)
 
     connection.close()
-    query_num += 1
+

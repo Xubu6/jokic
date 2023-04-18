@@ -1,5 +1,5 @@
-const dataRoute = async (fastify) => {
-  fastify.get("/data", async (req, reply) => {
+const routes = async (fastify) => {
+  fastify.get("/data/all", async (req, reply) => {
     const connection = await fastify.mysql.getConnection();
     const data = await connection.query("SELECT * FROM main_view");
     connection.release();
@@ -7,4 +7,4 @@ const dataRoute = async (fastify) => {
   });
 };
 
-module.exports = dataRoute;
+module.exports = routes;
