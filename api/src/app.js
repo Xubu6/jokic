@@ -11,8 +11,9 @@ const buildServer = async () => {
   } catch (error) {
     console.log(error);
   }
+  fastify.register(require("@fastify/cors"), { origin: true });
 
   return fastify;
 };
 
-module.exports = { buildServer }
+module.exports = { buildServer };
