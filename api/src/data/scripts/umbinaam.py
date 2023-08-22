@@ -77,10 +77,10 @@ def calculate_umbinaam(player_stats, analytics):
     fic_z_score = calculate_z_score(fic, Decimal(analytics[32]), analytics[33])
     dpm_z_score = calculate_z_score(dpm, Decimal(analytics[34]), analytics[35])
 
-    umbinaam = ((net_rating_z_score * Decimal(0.15)) + pie_z_score + (per_z_score * Decimal(0.20)) + ws_per_48_z_score + (bpm_z_score * Decimal(0.75))
+    umbinaam = ((net_rating_z_score * Decimal(0.15)) + pie_z_score + (per_z_score * Decimal(0.30)) + (ws_per_48_z_score * Decimal(0.30)) + (bpm_z_score * Decimal(0.75))
                 + (vorp_z_score * Decimal(0.75)) + epm_z_score + (e_wins_z_score * Decimal(0.50)) + lebron_z_score + (bbi_war_z_score * Decimal(0.50))
                 + rpm_z_score + (rpm_wins_z_score * Decimal(0.50)) + wpa_z_score + raptor_z_score + (raptor_war_z_score * Decimal(0.50))
-                + fic_z_score + (dpm_z_score * Decimal(0.75))) / Decimal(12.60)
+                + fic_z_score + (dpm_z_score * Decimal(0.75))) / Decimal(12.0)
     return umbinaam
 
 

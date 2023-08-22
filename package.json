@@ -4,12 +4,13 @@
   "description": "An aggregated view of every NBA metric for every NBA player",
   "main": "server.js",
   "scripts": {
+    "run-scrapers": "cd api/src/data/scripts && sh scripts.sh",
     "api:start": "nodemon ./api/src/server.js",
     "ui:start": "cd ui && yarn vite",
     "ui:build": "cd ui && yarn vite build",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
-    "start": "yarn api:start && yarn ui:build",
-    "start-dev": "yarn api:start && yarn ui:start"
+    "start": "arn ui:build && yarn api:start",
+    "start-dev": "concurrently \"yarn api:start\" \"yarn ui:start\""
   },
   "keywords": [],
   "author": "",
@@ -18,6 +19,7 @@
     "fastify": "^4.15.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.1",
     "nodemon": "^2.0.22"
   }
 }

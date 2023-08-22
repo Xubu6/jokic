@@ -4,7 +4,7 @@ import MainTable from "./components/MainTable.vue";
 
 <template>
   <div>
-    <h1>JOKIC</h1>
+    <h3 style="text-align: center; font-weight: lighter; margin: 0">JOKIC</h3>
     <MainTable />
   </div>
 </template>
