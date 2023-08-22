@@ -4,8 +4,12 @@
   "description": "An aggregated view of every NBA metric for every NBA player",
   "main": "server.js",
   "scripts": {
-    "start": "node src/server",
-    "serve": "nodemon ./src/server"
+    "api:start": "nodemon ./api/src/server.js",
+    "ui:start": "cd ui && yarn vite",
+    "ui:build": "cd ui && yarn vite build",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "start": "yarn api:start && yarn ui:build",
+    "start-dev": "yarn api:start && yarn ui:start"
   },
   "keywords": [],
   "author": "",
