@@ -12,3 +12,4 @@ python3 rpm.py
 
 python3 umbinaam.py
 python3 mainview.py
+python3 rankview.py

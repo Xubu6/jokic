@@ -5,3 +5,4 @@
 3. all stat scripts excluding umbinaam.py
 4. umbinaam.py
 5. mainview.py
+6. rankview.py
