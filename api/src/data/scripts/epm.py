@@ -2,8 +2,7 @@ import requests
 import os
 from selenium import webdriver
 import mysql.connector
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -11,14 +10,10 @@ from ast import literal_eval
 
 URL = "https://www.dunksandthrees.com/epm"
 
-# install latest chrome driver if not already installed
-chromedriver_autoinstaller.install()
-
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--window-size=1920,1200")
-
-driver = webdriver.Chrome(options=options)
+service = Service()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless");
+driver = webdriver.Chrome(service=service, options=options)
 driver.get(URL)
 
 # UTILITY FUNCTIONS
@@ -60,6 +55,8 @@ player_data = []
 
 rows = driver.find_elements(By.XPATH, '/html/body/div/main/div/div[2]/div[1]/div[3]/table/tbody/tr')
 num_rows = len(rows)
+
+print('Beginning epm scrapeage...\n_________________________________________')
 
 rows_remaining = True
 row = 1
@@ -116,6 +113,6 @@ try:
     connection.commit()
     print('Inserted data into epm successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into epm:', e)
 
 connection.close()

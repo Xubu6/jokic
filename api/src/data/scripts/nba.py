@@ -7,6 +7,8 @@ from nba_api.stats.static import players
 season_stats = []
 season_advanced_stats = []
 
+print('Beginning nba scrapeage...\n_________________________________________')
+
 # Fetch player data for current season
 players = players.get_players()
 for player in players:
@@ -221,6 +223,6 @@ try:
     connection.commit()
     print('Inserted data into nba_advanced successfully', season_advanced_stats)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into nba_advanced:', e)
 
 connection.close()

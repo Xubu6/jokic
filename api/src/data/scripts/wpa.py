@@ -3,6 +3,7 @@ import os
 from bs4 import BeautifulSoup
 from ast import literal_eval
 import mysql.connector
+import time
 
 def convert(val):
     try:
@@ -28,6 +29,8 @@ for group in groups:
     group_urls.append(url)
     
 player_data = []
+
+print('Beginning wpa scrapeage...\n_________________________________________')
     
 for group_url in group_urls:
     print('Scraping', group_url, '...')
@@ -50,6 +53,7 @@ for group_url in group_urls:
                 player_fields.append(field.text.replace('−', '-'))
                 counter+=1
             player_data.append(format_row(player_fields))
+    time.sleep(1)
 
 # Query
 insert_player_data_query = """
@@ -81,8 +85,8 @@ cursor = connection.cursor()
 try:
     cursor.executemany(insert_player_data_query, player_data)
     connection.commit()
-    print('Inserted data into rpm successfully', player_data)
+    print('Inserted data into wpa successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into wpa:', e)
 
 connection.close()

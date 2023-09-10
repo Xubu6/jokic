@@ -1,8 +1,10 @@
-import requests
 import os
 from bs4 import BeautifulSoup
-from ast import literal_eval
+from selenium import webdriver
 import mysql.connector
+from selenium.webdriver.chrome.service import Service
+from ast import literal_eval
+import time
 
 def convert(val):
     try:
@@ -21,21 +23,38 @@ def format_row(row_str):
 player_data = []
 
 URL = 'http://www.espn.com/nba/statistics/rpm'
-page = requests.get(URL)
-soup = BeautifulSoup(page.content, "html.parser")
+
+service = Service()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless");
+driver = webdriver.Chrome(service=service, options=options)
+
+driver.get(URL)
+
+page = driver.page_source
+soup = BeautifulSoup(page, "html.parser")
+
 pages = soup.find("div", class_="page-numbers").text
+
 max_page = convert(pages.split(' ')[-1])
+print(f'We will be scraping {max_page} pages.')
+
+time.sleep(3)
+print('Beginning rpm scrapeage...\n_________________________________________')
 
 page = None
 cur_page = 1
 while cur_page <= max_page:
     URL = 'http://www.espn.com/nba/statistics/rpm' if cur_page == 1 else 'http://www.espn.com/nba/statistics/rpm/_/page/{}'.format(cur_page)
-    page = requests.get(URL)
-    # print('player_data at url', page.url, ':', player_data)
+    driver.get(URL)
+    page = driver.page_source
+    print('Onto page ', cur_page)
+    time.sleep(2)
     if not page:
         print('invalid URL passed:', URL)
+        print('Not sure why but heres what the page looks like: ', page)
         continue
-    soup = BeautifulSoup(page.content, "html.parser")
+    soup = BeautifulSoup(page, "html.parser")
     table = soup.find("table")
     table_rows = table.find_all("tr")
     row_num = 1
@@ -86,6 +105,6 @@ try:
     connection.commit()
     print('Inserted data into rpm successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into rpm:', e)
 
 connection.close()

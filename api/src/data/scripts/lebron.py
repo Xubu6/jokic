@@ -1,9 +1,7 @@
-import requests
 import os
 from selenium import webdriver
 import mysql.connector
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from ast import literal_eval
@@ -23,14 +21,11 @@ def format_row(field_list):
 
 URL = "https://www.bball-index.com/lebron-database/"
 
-# install latest chrome driver if not already installed
-chromedriver_autoinstaller.install()
-
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--window-size=1920,1200")
-
-driver = webdriver.Chrome(options=options)
+from selenium.webdriver.chrome.service import Service
+service = Service()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless");
+driver = webdriver.Chrome(service=service, options=options)
 driver.get(URL)
 
 # filter for current season
@@ -47,17 +42,20 @@ rows = table.find_elements(By.TAG_NAME, "tr")
 
 player_data = []
 
+print('Beginning lebron scrapeage...\n_________________________________________')
+
 for row in rows:
     fields = row.find_elements(By.TAG_NAME, "td")
     field_num = 1
     field_list = []
     for field in fields:
-        if field_num == 1 or field_num > 7:
+        if (field_num == 1 or field_num > 7) and field_num != 12:
             field_list.append(field.text.replace('−', '-'))
         field_num+=1
     print('field data:', field_list)
     formatted_field_list = format_row(field_list)
     player_data.append(formatted_field_list)
+    # print('PLAYER_DATA:', player_data)
 
 # Query
 insert_player_data_query = """
@@ -99,7 +97,7 @@ try:
     connection.commit()
     print('Inserted data into lebron successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into lebron:', e)
 
 connection.close()
     

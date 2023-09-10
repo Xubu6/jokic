@@ -23,6 +23,8 @@ table_rows = table.find_all("tr", class_="full_table")
 
 player_data = []
 
+print('Beginning bbref scrapeage...\n_________________________________________')
+
 # Populate player data
 for row in table_rows:
     player_name = row.find("a").text.strip()
@@ -83,7 +85,7 @@ try:
     connection.commit()
     print('Inserted data into bbref successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into bbref:', e)
 
 connection.close()
 

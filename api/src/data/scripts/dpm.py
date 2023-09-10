@@ -2,10 +2,9 @@ import os
 import time
 from selenium import webdriver
 import mysql.connector
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from ast import literal_eval
+from selenium.webdriver.chrome.service import Service
 
 # UTILITY FUNCTIONS
 def convert(val):
@@ -22,14 +21,10 @@ def format_fields(fields):
 
 URL = "https://apanalytics.shinyapps.io/DARKO//"
 
-# install latest chrome driver if not already installed
-chromedriver_autoinstaller.install()
-
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--window-size=1920,1200")
-
-driver = webdriver.Chrome(options=options)
+service = Service()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless");
+driver = webdriver.Chrome(service=service, options=options)
 driver.get(URL)
 
 # navigate to dpm table
@@ -40,6 +35,8 @@ player_data = []
 
 entries = driver.find_element(By.XPATH, '//*[@id="DataTables_Table_0_info"]').text
 num_entries = convert(entries.split(' ')[-2])
+
+print('Beginning dpm scrapeage...\n_________________________________________')
 
 while (len(player_data)) <= num_entries:
     table = driver.find_element(By.XPATH, '//*[@id="DataTables_Table_0"]/tbody')
@@ -91,8 +88,8 @@ cursor = connection.cursor()
 try:
     cursor.executemany(insert_player_data_query, player_data)
     connection.commit()
-    print('Inserted data into raptor successfully', player_data)
+    print('Inserted data into dpm successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into dpm:', e)
 
 connection.close()

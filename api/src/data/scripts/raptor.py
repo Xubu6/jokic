@@ -2,9 +2,8 @@ import os
 from bs4 import BeautifulSoup
 from selenium import webdriver
 import mysql.connector
-import chromedriver_autoinstaller
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from ast import literal_eval
 
@@ -21,14 +20,11 @@ def filter_neg(val):
 
 URL = "https://projects.fivethirtyeight.com/nba-player-ratings/"
 
-# install latest chrome driver if not already installed
-chromedriver_autoinstaller.install()
+service = Service()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless");
+driver = webdriver.Chrome(service=service, options=options)
 
-options = Options()
-options.add_argument("--headless=new")
-options.add_argument("--window-size=1920,1200")
-
-driver = webdriver.Chrome(options=options)
 driver.get(URL)
 
 slider = driver.find_element(By.CLASS_NAME, 'slider')
@@ -39,11 +35,14 @@ driver.find_element(By.XPATH, '//*[@id="table"]/thead/tr[2]/th[2]').click()
 # Start to build scraped player data
 player_data = []
 
+print('Beginning raptor scrapeage...\n_________________________________________')
+
 page = driver.page_source
 soup = BeautifulSoup(page, "html.parser")
 table = soup.find("table", { "id": "table"})
 tbody = table.find("tbody")
 table_rows = tbody.find_all("tr")
+
 
 for row in table_rows:
     fields_list = []
@@ -90,6 +89,6 @@ try:
     connection.commit()
     print('Inserted data into raptor successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into raptor:', e)
 
 connection.close()

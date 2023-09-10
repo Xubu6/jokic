@@ -22,7 +22,9 @@ def prune_fields(player_fields):
         i+=1
     return pruned_fields
     
-player_data = []    
+player_data = []
+
+print('Beginning fic scrapeage...\n_________________________________________')
     
 page_num = 1
 is_next_page_available = 0
@@ -76,6 +78,6 @@ try:
     connection.commit()
     print('Inserted data into fic successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data:', e)
+    print('Could not insert player data into fic:', e)
 
 connection.close()

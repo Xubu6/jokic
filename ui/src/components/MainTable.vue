@@ -315,6 +315,9 @@ export default {
     axios.get("/data/all").then((res) => {
       const payload = res.data;
       console.log(payload[0]);
+      axios.get("/data/ranks").then((response) => {
+        console.log('ranks response:', response);
+      })
       // merge payload with standard percentile ranks
       // the color of the percentile should be
 
