@@ -1,6 +1,6 @@
 const SELECT_ALL_MAIN_VIEW = "SELECT * FROM main_view";
 
-const SELECT_ALL_RANK_VIEW = "SELECT * FROM main_view";
+const SELECT_ALL_RANK_VIEW = "SELECT * FROM rank_view";
 
 const FIND_PLAYER_BY_ID = "SELECT player_id, player_name FROM nba_main WHERE player_id=?";
 

@@ -32,26 +32,70 @@
           option-value="name"
         />
       </template>
+      <template v-slot:body-cell="props">
+        <q-td :props="props">
+          {{ props.value[0] ? props.value[0] : "--" }}
+          <q-item-label caption>
+            <q-badge
+              text-color="lightgrey"
+              v-if="props.value"
+              style="font-size: 9px"
+            >
+              {{ props.value[1] && props.value[0] ? props.value[1] : "" }}
+            </q-badge>
+          </q-item-label>
+        </q-td>
+      </template>
       <template v-slot:body-cell-umbinaam="props">
         <q-td :props="props">
           <div>
             <q-item-section>
               <q-badge
                 text-color="blue"
-                :label="props.value"
+                :label="props.value[0] ? props.value[0] : '--'"
                 style="
                   font-weight: bolder;
                   align-self: center;
                   background-color: inherit;
                 "
               />
-              <!-- <q-item-label caption>
-                <q-badge text-color="green" v-if="props.value">
-                  {{ props.value }}
+              <q-item-label caption>
+                <q-badge
+                  text-color="lightgrey"
+                  v-if="props.value"
+                  style="font-size: 9px"
+                >
+                  {{ props.value[1] && props.value[0] ? props.value[1] : "" }}
                 </q-badge>
-              </q-item-label> -->
+              </q-item-label>
             </q-item-section>
           </div>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-player_name="props">
+        <q-td :props="props">
+          {{ props.value[0] ? props.value[0] : "--" }}
+          <q-item-label caption>
+            <q-badge
+              text-color="lightgrey"
+              v-if="props.value"
+              style="background-color: inherit"
+            >
+            </q-badge>
+          </q-item-label>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-team_abbreviation="props">
+        <q-td :props="props">
+          {{ props.value[0] ? props.value[0] : "--" }}
+          <q-item-label caption>
+            <q-badge
+              text-color="lightgrey"
+              v-if="props.value"
+              style="background-color: inherit"
+            >
+            </q-badge>
+          </q-item-label>
         </q-td>
       </template>
     </q-table>
@@ -60,6 +104,7 @@
 
 <script>
 import axios from "axios";
+import { getFullName } from 'nba-color';
 
 export default {
   data() {
@@ -72,7 +117,8 @@ export default {
           align: "center",
           label: "Player",
           field: "player_name",
-          style: "font-weight: bold; color: #d3d3d3; margin-right: 5px; min-width: 9vw;",
+          style:
+            "font-weight: bold; color: #d3d3d3; margin-right: 5px; min-width: 9vw;",
           sortable: false,
         },
         {
@@ -89,9 +135,9 @@ export default {
           label: "MP",
           field: "min",
           style: "font-weight: light; font-size: 11px",
-          format: (val) => (Math.round(val * 10) / 10).toFixed(1),
+          format: (val) => [(Math.round(val[0] * 10) / 10).toFixed(1), val[1]],
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "umbinaam",
@@ -101,7 +147,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           required: true,
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "epm",
@@ -111,7 +157,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "raptor",
@@ -121,7 +167,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "raptor_war",
@@ -131,7 +177,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "dpm",
@@ -141,7 +187,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "vorp",
@@ -151,7 +197,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "bpm",
@@ -161,7 +207,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "lebron",
@@ -171,7 +217,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "net_rating",
@@ -181,7 +227,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "pie",
@@ -191,7 +237,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "per",
@@ -201,7 +247,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "ws_per_48",
@@ -211,7 +257,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "e_wins",
@@ -221,7 +267,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "bbi_war",
@@ -231,7 +277,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "rpm",
@@ -241,7 +287,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "rpm_wins",
@@ -251,7 +297,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "wpa",
@@ -261,7 +307,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "k_wpa",
@@ -271,7 +317,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
         {
           name: "fic",
@@ -281,7 +327,7 @@ export default {
           style: "font-weight: light; font-size: 11px",
           format: (val) => (val ? val : "--"),
           sortable: true,
-          sort: (a, b) => a - b,
+          sort: (a, b) => a[0] - b[0],
         },
       ],
       rows: [],
@@ -309,27 +355,107 @@ export default {
         "k_wpa",
         "fic",
       ],
+      ranks: [],
     };
   },
   mounted() {
-    axios.get("/data/all").then((res) => {
-      const payload = res.data;
-      console.log(payload[0]);
-      axios.get("/data/ranks").then((response) => {
-        console.log('ranks response:', response);
+    // local variables for convenience
+    let site_data = [];
+    let rank_data = [];
+    axios
+      .get("/data/all")
+      .then((res) => {
+        const payload = res.data;
+        site_data = payload[0];
+        console.log(site_data);
+        console.log(typeof site_data);
+        this.rows = site_data;
       })
-      // merge payload with standard percentile ranks
-      // the color of the percentile should be
-
-      // ADD RANKINGS TO SQL TABLE
-      this.rows = payload[0];
-    });
+      .catch(function (error) {
+        console.log(
+          "Something went wrong fetching site data:",
+          JSON.stringify(error)
+        );
+      });
+    axios
+      .get("/data/ranks")
+      .then((response) => {
+        rank_data = response.data[0];
+        console.log("ranks response:", rank_data);
+        this.ranks = rank_data;
+        this.mergeRank(site_data, rank_data);
+        const qt = document.getElementsByClassName("q-table__middle").item(0);
+        console.log("TABLE:", qt);
+        Object.keys(window).forEach((key) => {
+          if (/^on/.test(key)) {
+            qt.addEventListener(key.slice(2), (event) => {
+              this.changeColors();
+            });
+          }
+        });
+        // qt.addEventListener("scroll", (event) => {
+        //   this.changeColors();
+        // });
+        this.changeColors();
+      })
+      .catch(function (error) {
+        console.log(
+          "Something went wrong fetching rank data:",
+          JSON.stringify(error)
+        );
+      });
+  },
+  updated() {
+    this.changeColors();
+    console.log("Screen has changed");
   },
   methods: {
     getColor: function (percentile) {
-      //value from 0 to 1
-      var hue = ((1 - percentile) * 120).toString(10);
+      if (percentile === 0) {
+        return "#000000";
+      }
+      let hue = ((1 - percentile) * 120).toString(10);
       return ["hsl(", hue, ",100%,50%)"].join("");
+    },
+    changeColors: function () {
+      const num_players = this.rows.length;
+      let rank_labels = document.getElementsByClassName("q-badge flex inline");
+      console.log("Rank Labels:", rank_labels, rank_labels.length);
+      for (var i = rank_labels.length - 1; i > -1; i--) {
+        console.log("Number:", rank_labels[i].innerHTML);
+        const rank_val = rank_labels[i].innerHTML
+          ? parseInt(rank_labels[i].innerHTML)
+          : 0;
+        const percentile = rank_val / num_players;
+        rank_labels[i].style.color = this.getColor(percentile);
+      }
+    },
+    mergeRank: function (site_data, rank_data) {
+      console.log("Players:", site_data);
+      console.log("Ranks:", rank_data);
+      rank_data = Array.from(rank_data);
+      const merged_data = [];
+      site_data.forEach((row) => {
+        let cur_row = {};
+        const cur_name = row["player_name"];
+        const rank_row = rank_data.find((x) => x.player_name === cur_name);
+        // console.log(rank_row);
+        // console.log(`Player: ${cur_name} rank_row: ${rank_row} and cur_row: ${cur_row}`);
+        // console.log(`Player: ${cur_name} and cur_row: ${JSON.stringify(cur_row)}`);
+        for (const [field, val] of Object.entries(row)) {
+          const rank_field = field + "_rank";
+          const field_rank = rank_row[rank_field];
+          if (Number.isInteger(field_rank)) {
+            cur_row[field] = [val, field_rank];
+          } else {
+            cur_row[field] = [val, ""];
+          }
+        }
+        merged_data.push(cur_row);
+        // console.log(`Player: ${cur_name} Cur_Row: ${JSON.stringify(cur_row)}`);
+      });
+      console.log("Merged Data:", merged_data);
+      this.rows = merged_data;
     },
   },
 };
@@ -344,7 +470,7 @@ export default {
 
   .q-field__native
     color: white
-  
+
   .q-icon
     color: white
 
