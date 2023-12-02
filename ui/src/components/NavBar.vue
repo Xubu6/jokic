@@ -27,8 +27,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="about">
-          <div class="text-h6">Alarms</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <about />
         </q-tab-panel>
       </q-tab-panels>
     </div>
@@ -38,9 +37,10 @@
 <script>
 import { ref } from "vue";
 import MainTable from "./MainTable.vue";
+import About from "./About.vue"
 
 export default {
-  components: { MainTable },
+  components: { MainTable, About },
   setup() {
     return {
       tab: ref("stats"),
