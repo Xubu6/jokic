@@ -1,7 +1,6 @@
 from decimal import Decimal
 import os
 import mysql.connector
-import time
 
 fetch_all_query = """
 SELECT nba.player_id, nba.player_name, nbaa.net_rating, nbaa.pie, bbref.per,
@@ -19,6 +18,19 @@ LEFT JOIN fic ON fic.player_name=nba.player_name
 LEFT JOIN dpm ON dpm.player_name=nba.player_name
 """
 
+fetch_all_2024_query = """
+SELECT nba.player_id, nba.player_name, nbaa.net_rating, nbaa.pie, bbref.per,
+    bbref.ws_per_48, bbref.bpm, bbref.vorp, epm.epm, epm.e_wins,
+    wpa.wpa, fic.fic, dpm.dpm
+FROM nba_main_2024 AS nba
+LEFT JOIN nba_advanced_2024 AS nbaa ON nbaa.player_name=nba.player_name
+LEFT JOIN bbref_2024 AS bbref ON bbref.player_name=nba.player_name
+LEFT JOIN epm_2024 AS epm ON epm.player_name=nba.player_name
+LEFT JOIN wpa_2024 AS wpa ON wpa.player_name=nba.player_name
+LEFT JOIN fic_2024 AS fic ON fic.player_name=nba.player_name
+LEFT JOIN dpm_2024 AS dpm ON dpm.player_name=nba.player_name
+"""
+
 get_sd_mean_query = """
 SELECT STDDEV(nbaa.net_rating), AVG(nbaa.net_rating), STDDEV(nbaa.pie), AVG(nbaa.pie), STDDEV(bbref.per), AVG(bbref.per), STDDEV(bbref.ws_per_48), AVG(bbref.ws_per_48), STDDEV(bbref.bpm), AVG(bbref.bpm),
     STDDEV(bbref.bpm), AVG(bbref.bpm), STDDEV(bbref.vorp), AVG(bbref.vorp), STDDEV(epm.epm), AVG(epm.epm), STDDEV(epm.e_wins), AVG(epm.e_wins), STDDEV(lebron.lebron),
@@ -32,6 +44,20 @@ LEFT JOIN lebron ON lebron.player_name=nba.player_name
 LEFT JOIN rpm ON rpm.player_name=nba.player_name
 LEFT JOIN wpa ON wpa.player_name=nba.player_name
 LEFT JOIN raptor ON raptor.player_name=nba.player_name
+LEFT JOIN fic ON fic.player_name=nba.player_name
+LEFT JOIN dpm ON dpm.player_name=nba.player_name
+WHERE nba.min > 850;
+"""
+
+get_sd_mean_2024_query = """
+SELECT STDDEV(nbaa.net_rating), AVG(nbaa.net_rating), STDDEV(nbaa.pie), AVG(nbaa.pie), STDDEV(bbref.per), AVG(bbref.per), STDDEV(bbref.ws_per_48), AVG(bbref.ws_per_48), STDDEV(bbref.bpm), AVG(bbref.bpm),
+    STDDEV(bbref.bpm), AVG(bbref.bpm), STDDEV(bbref.vorp), AVG(bbref.vorp), STDDEV(epm.epm), AVG(epm.epm), STDDEV(epm.e_wins), AVG(epm.e_wins),
+    STDDEV(wpa.wpa), AVG(wpa.wpa), STDDEV(fic.fic), AVG(fic.fic), STDDEV(dpm.dpm), AVG(dpm.dpm)
+FROM nba_main AS nba
+LEFT JOIN nba_advanced AS nbaa ON nbaa.player_name=nba.player_name
+LEFT JOIN bbref ON bbref.player_name=nba.player_name
+LEFT JOIN epm ON epm.player_name=nba.player_name
+LEFT JOIN wpa ON wpa.player_name=nba.player_name
 LEFT JOIN fic ON fic.player_name=nba.player_name
 LEFT JOIN dpm ON dpm.player_name=nba.player_name
 WHERE nba.min > 850;
@@ -83,6 +109,31 @@ def calculate_umbinaam(player_stats, analytics):
                 + fic_z_score + (dpm_z_score * Decimal(0.75))) / Decimal(12.0)
     return umbinaam
 
+def calculate_umbinaam_2024(player_stats, analytics):
+    _, _, net_rating, pie, per, ws_per_48, bpm, vorp, epm, e_wins, wpa, fic, dpm = player_stats
+    net_rating_z_score = calculate_z_score(
+        net_rating, Decimal(analytics[0]), analytics[1])
+    pie_z_score = calculate_z_score(pie, Decimal(analytics[2]), analytics[3])
+    per_z_score = calculate_z_score(per, Decimal(analytics[4]), analytics[5])
+    ws_per_48_z_score = calculate_z_score(
+        ws_per_48, Decimal(analytics[6]), analytics[7])
+    net_rating_z_score = calculate_z_score(
+        net_rating, Decimal(analytics[8]), analytics[9])
+    bpm_z_score = calculate_z_score(bpm, Decimal(analytics[10]), analytics[11])
+    vorp_z_score = calculate_z_score(
+        vorp, Decimal(analytics[12]), analytics[13])
+    epm_z_score = calculate_z_score(epm, Decimal(analytics[14]), analytics[15])
+    e_wins_z_score = calculate_z_score(
+        e_wins, Decimal(analytics[16]), analytics[17])
+    wpa_z_score = calculate_z_score(wpa, Decimal(analytics[18]), analytics[19])
+    fic_z_score = calculate_z_score(fic, Decimal(analytics[20]), analytics[21])
+    dpm_z_score = calculate_z_score(dpm, Decimal(analytics[22]), analytics[23])
+
+    umbinaam = ((net_rating_z_score * Decimal(0.15)) + pie_z_score + (per_z_score * Decimal(0.30)) + (ws_per_48_z_score * Decimal(0.30)) + (bpm_z_score * Decimal(0.75))
+                + (vorp_z_score * Decimal(0.75)) + epm_z_score + (e_wins_z_score * Decimal(0.50)) + wpa_z_score
+                + fic_z_score + (dpm_z_score * Decimal(0.75))) / Decimal(7.5)
+    return umbinaam
+
 
 try:
     connection = mysql.connector.connect(
@@ -97,7 +148,7 @@ except mysql.connector.Error as e:
 cursor = connection.cursor()
 
 try:
-    cursor.execute(get_sd_mean_query)
+    cursor.execute(get_sd_mean_2024_query)
     analytics = cursor.fetchone()
 except mysql.connector.Error as e:
     print('Could not execute query:', e)
@@ -105,7 +156,7 @@ except mysql.connector.Error as e:
 data = []
 
 try:
-    cursor.execute(fetch_all_query)
+    cursor.execute(fetch_all_2024_query)
     data = cursor.fetchall()
     print('Data fetched')
 except mysql.connector.Error as e:
@@ -115,7 +166,7 @@ umbinaam_data = []
 
 for row in data:
     player_data = []
-    umbinaam = calculate_umbinaam(row, analytics)
+    umbinaam = calculate_umbinaam_2024(row, analytics)
     player_name = row[1]
     player_data.append(player_name)
     player_data.append(umbinaam)
@@ -126,7 +177,7 @@ connection.close()
 # inserting data
 # Query
 insert_player_data_query = """
-INSERT INTO umbinaam 
+INSERT INTO umbinaam_2024 
     (PLAYER_NAME,
     UMBINAAM) VALUES (%s, %s)
 ON DUPLICATE KEY UPDATE 

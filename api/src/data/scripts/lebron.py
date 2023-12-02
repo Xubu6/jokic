@@ -24,14 +24,14 @@ URL = "https://www.bball-index.com/lebron-database/"
 from selenium.webdriver.chrome.service import Service
 service = Service()
 options = webdriver.ChromeOptions()
-options.add_argument("--headless");
+# options.add_argument("--headless");
 driver = webdriver.Chrome(service=service, options=options)
 driver.get(URL)
 
 # filter for current season
 season_filter = driver.find_element(By.ID, "table_1_2_filter")
 season_filter_input = season_filter.find_element(By.TAG_NAME, "input")
-season_filter_input.send_keys('2022-23')
+season_filter_input.send_keys('2023-24') # DOES NOT YET EXIST
 
 # select all entries from dropdown
 dropdown = Select(driver.find_element(By.TAG_NAME, "select"))
@@ -59,7 +59,7 @@ for row in rows:
 
 # Query
 insert_player_data_query = """
-INSERT INTO lebron 
+INSERT INTO lebron_2024 
     (PLAYER_NAME,
     LEBRON,
     O_LEBRON,

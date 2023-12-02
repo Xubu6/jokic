@@ -28,9 +28,10 @@ print('Beginning fic scrapeage...\n_________________________________________')
     
 page_num = 1
 is_next_page_available = 0
+current_year = 2024
 
 while is_next_page_available == 0:
-    URL = "https://basketball.realgm.com/nba/stats/2023/Advanced_Stats/All/fic/All/desc/{}/Regular_Season".format(page_num)
+    URL = "https://basketball.realgm.com/nba/stats/{}/Advanced_Stats/All/fic/All/desc/{}/Regular_Season".format(current_year, page_num)
     page = requests.get(URL)
     soup = BeautifulSoup(page.content, "html.parser")
     next_page = soup.find("p", attrs={ "style": "text-align: center;" }).find_all("a")[-1].text if soup.find("p", attrs={ "style": "text-align: center;" }) else None
@@ -50,7 +51,7 @@ while is_next_page_available == 0:
 
 # Query
 insert_player_data_query = """
-INSERT INTO fic 
+INSERT INTO fic_2024
     (PLAYER_NAME,
     TS,
     FIC) VALUES (%s, %s, %s)

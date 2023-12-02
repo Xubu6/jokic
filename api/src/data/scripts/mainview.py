@@ -18,6 +18,21 @@ LEFT JOIN umbinaam ON umbinaam.player_name=nba.player_name
 WHERE nba.min > 100
 """
 
+# LEFT JOIN rpm ON rpm.player_name=nba.player_name
+update_view_2024_query = """
+CREATE OR REPLACE VIEW main_view_2024 AS
+SELECT ROW_NUMBER() OVER(ORDER BY umbinaam.umbinaam DESC) AS rk, nba.player_name, nba.team_abbreviation, nba.min, umbinaam.umbinaam, nbaa.net_rating, nbaa.pie, bbref.per, bbref.ws_per_48, bbref.bpm, bbref.vorp, epm.epm, epm.e_wins, wpa.wpa, wpa.k_wpa, fic.fic, dpm.dpm
+FROM nba_main_2024 AS nba
+LEFT JOIN nba_advanced_2024 AS nbaa ON nbaa.player_name=nba.player_name
+LEFT JOIN bbref_2024 AS bbref ON bbref.player_name=nba.player_name
+LEFT JOIN epm_2024 AS epm ON epm.player_name=nba.player_name
+LEFT JOIN wpa_2024 AS wpa ON wpa.player_name=nba.player_name
+LEFT JOIN fic_2024 AS fic ON fic.player_name=nba.player_name
+LEFT JOIN dpm_2024 AS dpm ON dpm.player_name=nba.player_name
+LEFT JOIN umbinaam_2024 AS umbinaam ON umbinaam.player_name=nba.player_name
+WHERE nba.min > 100
+"""
+
 try:
     connection = mysql.connector.connect(
         host="localhost",
@@ -31,7 +46,7 @@ except mysql.connector.Error as e:
 cursor = connection.cursor()
 # Create main_view view if needed
 try:
-    cursor.execute(update_view_query)
+    cursor.execute(update_view_2024_query)
     print('Successfully updated main_view!')
 except mysql.connector.Error as e:
     print('Could not execute query:', e)

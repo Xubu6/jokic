@@ -57,7 +57,7 @@ for group_url in group_urls:
 
 # Query
 insert_player_data_query = """
-INSERT INTO wpa 
+INSERT INTO wpa_2024 
     (PLAYER_NAME,
     WPA,
     E_WPA,

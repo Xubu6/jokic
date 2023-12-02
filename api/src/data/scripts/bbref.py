@@ -11,7 +11,7 @@ def convert(val):
     except:
         return val
 
-current_year = datetime.date.today().year
+current_year = datetime.date.today().year + 1
 
 URL = 'https://www.basketball-reference.com/leagues/NBA_{}_advanced.html'.format(
     current_year)
@@ -43,7 +43,7 @@ for row in table_rows:
     
 # Query
 insert_player_data_query = """
-INSERT INTO bbref 
+INSERT INTO bbref_2024 
     (PLAYER_NAME,
     PER,
     OWS,
@@ -85,7 +85,7 @@ try:
     connection.commit()
     print('Inserted data into bbref successfully', player_data)
 except mysql.connector.Error as e:
-    print('Could not insert player data into bbref:', e)
+    print('Could not insert player data into bbref24:', e)
 
 connection.close()
 

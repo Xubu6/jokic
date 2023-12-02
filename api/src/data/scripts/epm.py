@@ -6,7 +6,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from webdriver_manager.chrome import ChromeDriverManager
 from ast import literal_eval
+
 
 URL = "https://www.dunksandthrees.com/epm"
 
@@ -81,7 +83,7 @@ while rows_remaining:
     
 # Query
 insert_player_data_query = """
-INSERT INTO epm 
+INSERT INTO epm_2024 
     (PLAYER_NAME,
     E_OFF_PLUS_MINUS,
     E_DEF_PLUS_MINUS,

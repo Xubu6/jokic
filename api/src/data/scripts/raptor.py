@@ -7,6 +7,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from ast import literal_eval
 
+## UNFORTUNATELY, AS OF 2023-24, RAPTOR IS DEPRECATED :((((( 
+# sad bc that was my favorite one too...
+
 # UTILITY FUNCTIONS
 def convert(val):
     try:

@@ -2,6 +2,7 @@
   <div class="q-pa-md" style="padding-top: 0">
     <q-table
       class="my-sticky-header-table"
+      dark
       flat
       :dense="$q.screen.lt.md"
       :rows="rows"
@@ -12,6 +13,7 @@
       hide-pagination
       :rows-per-page-options="[0]"
       :visible-columns="visibleColumns"
+      :loading="loading"
     >
       <template v-slot:top>
         <q-select
@@ -104,12 +106,15 @@
 
 <script>
 import axios from "axios";
-import { getFullName } from 'nba-color';
 
 export default {
+  props: {
+    player_data: {},
+  },
   data() {
     return {
       playerData: {},
+      loading: false,
       columns: [
         {
           name: "player_name",
@@ -118,15 +123,15 @@ export default {
           label: "Player",
           field: "player_name",
           style:
-            "font-weight: bold; color: #d3d3d3; margin-right: 5px; min-width: 9vw;",
-          sortable: false,
+            "font-weight: bold; color: #d3d3d3; width: 10vw; max-width: 10vw; overflow: hidden",
+          sortable: true,
         },
         {
           name: "team_abbreviation", // Eventually replace with logos (mapping of abbreviations to .svg paths perhaps?)
           align: "center",
           label: "TEAM",
           field: "team_abbreviation",
-          style: "font-weight: light; font-size: 11px",
+          style: "font-weight: light; font-size: 13px",
           sortable: false,
         },
         {
@@ -385,7 +390,6 @@ export default {
         this.ranks = rank_data;
         this.mergeRank(site_data, rank_data);
         const qt = document.getElementsByClassName("q-table__middle").item(0);
-        console.log("TABLE:", qt);
         Object.keys(window).forEach((key) => {
           if (/^on/.test(key)) {
             qt.addEventListener(key.slice(2), (event) => {
@@ -393,9 +397,6 @@ export default {
             });
           }
         });
-        // qt.addEventListener("scroll", (event) => {
-        //   this.changeColors();
-        // });
         this.changeColors();
       })
       .catch(function (error) {
@@ -405,30 +406,27 @@ export default {
         );
       });
   },
-  updated() {
-    this.changeColors();
-    console.log("Screen has changed");
-  },
   methods: {
     getColor: function (percentile) {
       if (percentile === 0) {
         return "#000000";
       }
       let hue = ((1 - percentile) * 120).toString(10);
-      return ["hsl(", hue, ",100%,50%)"].join("");
+      return ["hsl(", hue, ",80%,50%)"].join("");
     },
     changeColors: function () {
+      this.loading = true;
       const num_players = this.rows.length;
       let rank_labels = document.getElementsByClassName("q-badge flex inline");
       console.log("Rank Labels:", rank_labels, rank_labels.length);
       for (var i = rank_labels.length - 1; i > -1; i--) {
-        console.log("Number:", rank_labels[i].innerHTML);
         const rank_val = rank_labels[i].innerHTML
           ? parseInt(rank_labels[i].innerHTML)
           : 0;
         const percentile = rank_val / num_players;
         rank_labels[i].style.color = this.getColor(percentile);
       }
+      this.loading = false;
     },
     mergeRank: function (site_data, rank_data) {
       console.log("Players:", site_data);
@@ -439,9 +437,6 @@ export default {
         let cur_row = {};
         const cur_name = row["player_name"];
         const rank_row = rank_data.find((x) => x.player_name === cur_name);
-        // console.log(rank_row);
-        // console.log(`Player: ${cur_name} rank_row: ${rank_row} and cur_row: ${cur_row}`);
-        // console.log(`Player: ${cur_name} and cur_row: ${JSON.stringify(cur_row)}`);
         for (const [field, val] of Object.entries(row)) {
           const rank_field = field + "_rank";
           const field_rank = rank_row[rank_field];
@@ -452,7 +447,6 @@ export default {
           }
         }
         merged_data.push(cur_row);
-        // console.log(`Player: ${cur_name} Cur_Row: ${JSON.stringify(cur_row)}`);
       });
       console.log("Merged Data:", merged_data);
       this.rows = merged_data;
@@ -476,7 +470,7 @@ export default {
 
 .my-sticky-header-table
 
-  height: 88vh
+  height: 91vh
   max-width: 98vw
   margin-left: auto
   margin-right: auto
@@ -504,7 +498,9 @@ export default {
 
   &.q-table--loading thead tr:last-child th
     /* height of all previous header rows */
-    top: 48px
+    color: green
+    background-color: green
+    top: 148px
 
   /* prevent scrolling behind sticky top row on focus */
   tbody
@@ -517,4 +513,5 @@ export default {
 
   td
     padding: 0 !important
+
 </style>

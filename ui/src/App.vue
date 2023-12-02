@@ -6,9 +6,10 @@ import NavBar from "./components/NavBar.vue"
 <template>
   <div class="container">
     <NavBar />
-    <!-- <h3 style="text-align: center; font-weight: lighter; margin: 0; color: white; padding-top: 10px; padding-bottom: 10px">JOKIC</h3> -->
+    <!-- <h3 style="text-align: center; fo
+    nt-weight: lighter; margin: 0; color: white; padding-top: 10px; padding-bottom: 10px">JOKIC</h3> -->
     <!-- tiles that can be expanded to learn about each stat, specifically umbinaam (perhaps ?) "Weightings based on sophisticated sentiment analysis" lmao-->
-    <MainTable />
+    <!-- <MainTable /> -->
   </div>
 </template>
 

@@ -44,7 +44,7 @@ for player in players:
 # Populate Database
 # Queries
 insert_player_data_query = """
-INSERT INTO nba_main
+INSERT INTO nba_main_2024
     (PLAYER_ID,
     PLAYER_NAME,
     SEASON_ID,
@@ -105,7 +105,7 @@ ON DUPLICATE KEY UPDATE
 """
 
 insert_player_advanced_data_query = """
-INSERT INTO nba_advanced 
+INSERT INTO nba_advanced_2024 
     (PLAYER_ID,
     PLAYER_NAME,
     GROUP_SET,

@@ -23,7 +23,7 @@ URL = "https://apanalytics.shinyapps.io/DARKO//"
 
 service = Service()
 options = webdriver.ChromeOptions()
-options.add_argument("--headless");
+# options.add_argument("--headless");
 driver = webdriver.Chrome(service=service, options=options)
 driver.get(URL)
 
@@ -58,7 +58,7 @@ while (len(player_data)) <= num_entries:
 
 # Query
 insert_player_data_query = """
-INSERT INTO dpm 
+INSERT INTO dpm_2024 
     (PLAYER_NAME,
     DPM,
     O_DPM,
