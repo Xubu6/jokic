@@ -23,7 +23,7 @@
       </q-tabs>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="stats">
-          <main-table />
+          <main-table-2 />
         </q-tab-panel>
 
         <q-tab-panel name="about">
@@ -36,11 +36,13 @@
 
 <script>
 import { ref } from "vue";
-import MainTable from "./MainTable.vue";
+// import MainTable from "./MainTable.vue";
+import MainTable2 from "./MainTable2.vue";
 import About from "./About.vue"
+import MainTable2 from './MainTable2.vue';
 
 export default {
-  components: { MainTable, About },
+  components: { MainTable, About, MainTable2 },
   setup() {
     return {
       tab: ref("stats"),
